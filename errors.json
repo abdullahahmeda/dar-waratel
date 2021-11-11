@@ -1,0 +1,84 @@
+{
+  "1": {
+    "message": "Unexpected error occurred. Please try again later."
+  },
+  "10": {
+    "message": "Invalid CSRF token."
+  },
+
+  "100": {
+    "message": "Username is required."
+  },
+  "101": {
+    "message": "Username length must be at least 3 characters long."
+  },
+  "102": {
+    "message": "Username length must be at most 50 characters long."
+  },
+  "103": {
+    "message": "Username should only contain letters, numbers, underscores and dots."
+  },
+
+  "110": {
+    "message": "Password is required."
+  },
+  "111": {
+    "message": "Password length must be at least 4 characters long."
+  },
+  "112": {
+    "message": "Password length must be at most 128 characters long."
+  },
+
+  "120": {
+    "message": "Type is required."
+  },
+  "121": {
+    "message": "Type must be a value of ['admin', 'guardian']."
+  },
+
+  "190": {
+    "message": "Incorrect username or password."
+  },
+
+  "200": {
+    "message": "Name is required."
+  },
+
+  "210": {
+    "message": "Username is required."
+  },
+  "211": {
+    "message": "Username length must be at least 3 characters long."
+  },
+  "212": {
+    "message": "Username length must be at most 50 characters long."
+  },
+  "213": {
+    "message": "Username should only contain letters, numbers, underscores and dots."
+  },
+
+  "220": {
+    "message": "Password is required."
+  },
+  "221": {
+    "message": "Password length must be at least 4 characters long."
+  },
+  "222": {
+    "message": "Password length must be at most 128 characters long."
+  },
+
+  "225": {
+    "message": "Password confirmation is required."
+  },
+  "226": {
+    "message": "Password and password confirmation do not match."
+  },
+
+  "230": {
+    "message": "Phone is required."
+  },
+
+  "290": {
+    "message": "A guardian already exists with this username."
+  }
+}
