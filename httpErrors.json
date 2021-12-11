@@ -2,6 +2,9 @@
   "1": {
     "message": "Unexpected error occurred. Please try again later."
   },
+  "2": {
+    "message": "No user authenticated."
+  },
   "10": {
     "message": "Invalid CSRF token."
   },

@@ -1,7 +1,7 @@
 const logger = require('../services/logger')
-// const Grade = require('../models/grade')
 const createGradeSchema = require('../validation-schemas/create-grade')
 const SessionStudent = require('../models/session-student')
+const Grade = require('../models/grade')
 
 async function create (req, res) {
   // Validate the data
@@ -18,21 +18,21 @@ async function create (req, res) {
   // Create the grade
   let grade
   try {
-    grade = await SessionStudent.relatedQuery('grades').for(body.session_student_id).insert({
-      name: body.name,
-      type: body.type,
-      grade: body.grade
+    grade = await SessionStudent.query().upsertGraph({
+      session_id: body.session_id,
+      student_id: body.student_id,
+      grades: body.grades,
     })
   } catch (error) {
     if (error.name === 'ForeignKeyViolationError') {
       return res.status(400).json({
         ok: false,
         error: {
-          message: 'This session_student_id does not exist.'
+          message: 'This session or this student do not exist.'
         }
       })
     }
-    logger.error('Unexpected error occurred while creating a class')
+    logger.error('Unexpected error occurred while creating grades')
     logger.error(error)
     return res.status(500).json({
       ok: false,
@@ -48,6 +48,31 @@ async function create (req, res) {
   })
 }
 
+async function get (req, res) {
+  const { sessionId, studentId } = req.params
+  let grades
+  try {
+    grades = await Grade.query().select('id', 'grade', 'name', 'type').where({
+      session_id: sessionId,
+      student_id: studentId
+    })
+  } catch (error) {
+    logger.error('Unexpected error occurred while fetching grades')
+    logger.error(error)
+    return res.status(500).json({
+      ok: false,
+      error: {
+        message: 'Unexpected error occurred.'
+      }
+    })
+  }
+  res.json({
+    ok: true,
+    grades
+  })
+}
+
 module.exports = {
-  create
+  create,
+  get
 }

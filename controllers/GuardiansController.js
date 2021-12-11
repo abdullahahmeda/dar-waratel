@@ -2,13 +2,16 @@ const Guardian = require('../models/guardian')
 const createGuardianSchema = require('../validation-schemas/create-guardian')
 const logger = require('../services/logger')
 const { hash } = require('../services/bcrypt')
-const httpError = require('../httpError')
+const httpError = require('../utils/httpError')
 
 async function all (req, res) {
-  let guardians
+  let guardians = Guardian.query()
+  if (req.query.page) guardians.page(req.query.page, req.query.page_size || 10)
   try {
-    guardians = await Guardian.query()
+    guardians = await guardians
   } catch (error) {
+    logger.error('Unexpected error occurred while creating a student')
+    logger.error(error)
     return res.status(500).json(httpError(1))
   }
 
@@ -32,7 +35,7 @@ async function create (req, res) {
   try {
     hashedPassword = await hash(body.password)
   } catch (error) {
-    logger.error('Unexpected error occurred while logging in')
+    logger.error('Unexpected error occurred while creating a guardian')
     logger.error(error)
     return res.status(500).json(httpError(1))
   }

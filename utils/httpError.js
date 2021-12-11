@@ -1,7 +1,7 @@
-const errors = require('./errors.json')
+const errors = require('../httpErrors.json')
 
 module.exports = function httpError (code, others = {}) {
-  if (!errors[code]) throw Error(`errors.json file does not have response for ${code}`)
+  if (!errors[code]) throw Error(`httpErrors.json file does not have response for ${code}`)
   return {
     ok: false,
     error: {

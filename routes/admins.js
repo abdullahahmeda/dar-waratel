@@ -1,7 +1,9 @@
 const router = require('express').Router()
 const AdminsController = require('../controllers/AdminsController')
+const requireAdmin = require('../middlewares/requireAdmin')
+const csrfProtection = require('../middlewares/csrfProtection')
 
-router.post('/', AdminsController.create)
+router.post('/', requireAdmin, csrfProtection, AdminsController.create)
 
 module.exports = {
   path: '/admins',

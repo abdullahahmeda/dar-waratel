@@ -3,7 +3,7 @@ const Admin = require('../models/admin')
 const loginSchema = require('../validation-schemas/login')
 const { compare } = require('../services/bcrypt')
 const Guardian = require('../models/guardian')
-const httpError = require('../httpError')
+const httpError = require('../utils/httpError')
 
 async function me (req, res) {
   return res.json({
@@ -56,7 +56,19 @@ async function login (req, res) {
   })
 }
 
+async function logout (req, res) {
+  if (!req.session.user) {
+    return res.status(400).json(httpError(2))
+  }
+  req.session.user = null
+  res.json({
+    ok: true,
+    message: 'You have been logged out.'
+  })
+}
+
 module.exports = {
   me,
-  login
+  login,
+  logout
 }

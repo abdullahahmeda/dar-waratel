@@ -2,7 +2,7 @@ const logger = require('../services/logger')
 const Admin = require('../models/admin')
 const createAdminSchema = require('../validation-schemas/create-admin')
 const { hash } = require('../services/bcrypt')
-const httpError = require('../httpError')
+const httpError = require('../utils/httpError')
 
 async function create (req, res) {
   // Validate the data

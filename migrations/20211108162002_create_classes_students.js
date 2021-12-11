@@ -1,7 +1,8 @@
 exports.up = function (knex) {
   return knex.schema.createTable('classes_students', (table) => {
-    table.integer('class_id').unsigned().primary().references('classes.id')
-    table.integer('student_id').unsigned().notNullable().references('students.id')
+    table.increments()
+    table.integer('class_id').unsigned().notNullable().references('classes.id').onDelete('cascade')
+    table.integer('student_id').unsigned().notNullable().references('students.id').onDelete('cascade')
   })
 }
 

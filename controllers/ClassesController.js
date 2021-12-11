@@ -1,6 +1,24 @@
 const logger = require('../services/logger')
 const Class = require('../models/class')
 const createClassSchema = require('../validation-schemas/create-class')
+const httpError = require('../utils/httpError')
+
+async function all (req, res) {
+  let classes = Class.query()
+  if (req.query.page) classes.page(req.query.page, req.query.page_size || 10)
+  try {
+    classes = await classes
+  } catch (error) {
+    logger.error('Unexpected error occurred while creating a student')
+    logger.error(error)
+    return res.status(500).json(httpError(1))
+  }
+
+  res.json({
+    ok: true,
+    classes
+  })
+}
 
 async function create (req, res) {
   // Validate the data
@@ -17,10 +35,15 @@ async function create (req, res) {
   // Create the class
   let _class
   try {
+    console.log(body.students)
     _class = await Class.transaction(async trx => {
-      const _class = await Class.query(trx).insert({ name: body.name })
+      const _class = await Class.query(trx).insertGraph({
+        name: body.name,
+        students: body.students.map(studentId => ({ id: studentId }))
+      }, {
+        relate: true
+      })
       logger.debug(_class)
-      await _class.$relatedQuery('students', trx).relate(body.students)
       return _class
     })
   } catch (error) {
@@ -34,12 +57,7 @@ async function create (req, res) {
     }
     logger.error('Unexpected error occurred while creating a class')
     logger.error(error)
-    return res.status(500).json({
-      ok: false,
-      error: {
-        message: 'Unexpected error occurred.'
-      }
-    })
+    return res.status(500).json(httpError(1))
   }
 
   res.json({
@@ -48,6 +66,29 @@ async function create (req, res) {
   })
 }
 
+async function destroy (req, res) {
+  const { id } = req.params
+  if (!id) {
+    return res.status(400).json({
+      ok: false,
+      message: '`id` parameter must be sent.'
+    })
+  }
+  try {
+    await Class.query().deleteById(id)
+  } catch (error) {
+    logger.error('Unexpected error occurred while deleting a class')
+    logger.error(error)
+    return res.status(500).json(httpError(1))
+  }
+  res.json({
+    ok: true,
+    message: 'Class has been deleted.'
+  })
+}
+
 module.exports = {
-  create
+  all,
+  create,
+  destroy
 }
