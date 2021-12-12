@@ -18,6 +18,7 @@ const app = express()
 nconf.argv().env().file('config.json')
 
 const database = require('./services/database')
+const httpError = require('./utils/httpError')
 
 // Use Objection.js for our database
 Model.knex(database)
@@ -42,6 +43,12 @@ app.use(escapeBody())
 app.use(morgan('dev'))
 
 setupRoutes(app)
+
+app.use(function jsonCorsResponse (err, req, res, next) {
+  // Custom json response for cors error
+  if (err.code !== 'EBADCSRFTOKEN') return next(err)
+  res.status(403).json(httpError(10))
+})
 
 const PORT = isNaN(nconf.get('port')) ? 3000 : nconf.get('port')
 

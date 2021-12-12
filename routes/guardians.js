@@ -7,6 +7,7 @@ router.use(requireAuth)
 
 router.get('/', GuardiansController.all)
 router.post('/', csrfProtection, GuardiansController.create)
+router.delete('/:id', csrfProtection, GuardiansController.destroy)
 
 module.exports = {
   path: '/guardians',

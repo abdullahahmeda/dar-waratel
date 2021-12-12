@@ -10,33 +10,42 @@
   },
 
   "100": {
-    "message": "Username is required."
+    "message": "\"username\" is required."
   },
   "101": {
-    "message": "Username length must be at least 3 characters long."
+    "message": "\"username\" must be a string."
   },
   "102": {
-    "message": "Username length must be at most 50 characters long."
+    "message": "\"username\" length must be at least 3 characters long."
   },
   "103": {
-    "message": "Username should only contain letters, numbers, underscores and dots."
+    "message": "\"username\" length must be at most 50 characters long."
+  },
+  "104": {
+    "message": "\"username\" may only contain letters, numbers, underscores and dots."
   },
 
   "110": {
-    "message": "Password is required."
+    "message": "\"password\" is required."
   },
   "111": {
-    "message": "Password length must be at least 4 characters long."
+    "message": "\"password\" must be a string."
   },
   "112": {
-    "message": "Password length must be at most 128 characters long."
+    "message": "\"password\" length must be at least 4 characters long."
+  },
+  "113": {
+    "message": "\"password\" length must be at most 128 characters long."
   },
 
   "120": {
-    "message": "Type is required."
+    "message": "\"type\" is required."
   },
   "121": {
-    "message": "Type must be a value of ['admin', 'guardian']."
+    "message": "\"type\" must be a string."
+  },
+  "122": {
+    "message": "\"type\" must be a value of ['admin', 'guardian']."
   },
 
   "190": {
@@ -44,44 +53,86 @@
   },
 
   "200": {
-    "message": "Name is required."
+    "message": "\"name\" is required."
+  },
+  "201": {
+    "message": "\"name\" must be a string."
   },
 
   "210": {
-    "message": "Username is required."
+    "message": "\"username\" is required."
   },
   "211": {
-    "message": "Username length must be at least 3 characters long."
+    "message": "\"username\" must be a string."
   },
   "212": {
-    "message": "Username length must be at most 50 characters long."
+    "message": "\"username\" length must be at least 3 characters long."
   },
   "213": {
-    "message": "Username should only contain letters, numbers, underscores and dots."
+    "message": "\"username\" length must be at most 50 characters long."
+  },
+  "214": {
+    "message": "\"username\" may only contain letters, numbers, underscores and dots."
   },
 
   "220": {
-    "message": "Password is required."
+    "message": "\"password\" is required."
   },
   "221": {
-    "message": "Password length must be at least 4 characters long."
+    "message": "\"password\" must be a string."
   },
   "222": {
-    "message": "Password length must be at most 128 characters long."
+    "message": "\"password\" length must be at least 4 characters long."
+  },
+  "223": {
+    "message": "\"password\" length must be at most 128 characters long."
   },
 
   "225": {
-    "message": "Password confirmation is required."
+    "message": "\"password_confirmation\" is required."
   },
   "226": {
-    "message": "Password and password confirmation do not match."
+    "message": "\"password_confirmation\" must be a string."
+  },
+  "227": {
+    "message": "\"password\" and \"password_confirmation\" do not match."
   },
 
   "230": {
-    "message": "Phone is required."
+    "message": "\"phone\" is required."
+  },
+  "231": {
+    "message": "\"phone\" must be a string."
   },
 
   "290": {
     "message": "A guardian already exists with this username."
+  },
+  "291": {
+    "message": "Invalid \"id\"."
+  },
+
+  "300": {
+    "message": "\"name\" is required."
+  },
+  "301": {
+    "message": "\"name\" must be a string."
+  },
+
+  "310": {
+    "message": "\"guardian_id\" is required."
+  },
+  "311": {
+    "message": "Invalid \"guardian_id\"."
+  },
+
+  "390": {
+    "message": "This \"guardian_id\" does not exist."
+  },
+  "391": {
+    "message": "Student was not found."
+  },
+  "392": {
+    "message": "Invalid \"id\"."
   }
 }
