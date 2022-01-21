@@ -21,12 +21,14 @@ class AuthController {
     } catch (error) {
       return res.status(400).json(httpError(error.details[0].message))
     }
-  
+
     // Fetch the user
     let user
     try {
-      if (body.type === 'admin') user = await Admin.query().findOne({ username: body.username })
-      else if (body.type === 'guardian') user = await Guardian.query().findOne({ username: body.username })
+      if (body.type === 'admin')
+        user = await Admin.query().findOne({ username: body.username })
+      else if (body.type === 'guardian')
+        user = await Guardian.query().findOne({ username: body.username })
     } catch (error) {
       logger.error('Unexpected error occurred while logging in')
       logger.error(error)
@@ -35,7 +37,7 @@ class AuthController {
     if (!user) {
       return res.status(401).json(httpError(190))
     }
-  
+
     // Check the password
     let isPasswordCorrect
     try {
@@ -48,7 +50,7 @@ class AuthController {
     if (!isPasswordCorrect) {
       return res.status(401).json(httpError(190))
     }
-  
+
     // Password is correct, save user to session
     req.session.user = { id: user.id, username: user.username, type: body.type }
     res.json({

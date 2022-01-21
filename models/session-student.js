@@ -5,7 +5,7 @@ class SessionStudent extends Model {
     return 'sessions_students'
   }
 
-  static get idColumn() {
+  static get idColumn () {
     return ['session_id', 'student_id']
   }
 
@@ -18,12 +18,9 @@ class SessionStudent extends Model {
         join: {
           from: [
             'sessions_students.session_id',
-            'sessions_students.student_id',
+            'sessions_students.student_id'
           ],
-          to: [
-            'grades.session_id',
-            'grades.student_id'
-          ]
+          to: ['grades.session_id', 'grades.student_id']
         }
       }
     }

@@ -15,14 +15,14 @@ class GradesController {
         error
       })
     }
-  
+
     // Create the grade
     let grade
     try {
       grade = await SessionStudent.query().upsertGraph({
         session_id: body.session_id,
         student_id: body.student_id,
-        grades: body.grades,
+        grades: body.grades
       })
     } catch (error) {
       if (error.name === 'ForeignKeyViolationError') {
@@ -42,7 +42,7 @@ class GradesController {
         }
       })
     }
-  
+
     res.json({
       ok: true,
       grade
@@ -53,10 +53,12 @@ class GradesController {
     const { sessionId, studentId } = req.params
     let grades
     try {
-      grades = await Grade.query().select('id', 'grade', 'name', 'type').where({
-        session_id: sessionId,
-        student_id: studentId
-      })
+      grades = await Grade.query()
+        .select('id', 'grade', 'name', 'type')
+        .where({
+          session_id: sessionId,
+          student_id: studentId
+        })
     } catch (error) {
       logger.error('Unexpected error occurred while fetching grades')
       logger.error(error)

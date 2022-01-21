@@ -8,10 +8,13 @@ const Joi = require('joi')
 class StudentsController {
   static async all (req, res) {
     let students = Student.query()
-    if (req.query.class_id) students = Class.relatedQuery('students').for(req.query.class_id)
-    if (req.query.guardian_id) students = students.where('guardian_id', req.query.guardian_id)
-  
-    if (req.query.page) students = students.page(req.query.page, req.query.page_size || 10)
+    if (req.query.class_id)
+      students = Class.relatedQuery('students').for(req.query.class_id)
+    if (req.query.guardian_id)
+      students = students.where('guardian_id', req.query.guardian_id)
+
+    if (req.query.page)
+      students = students.page(req.query.page, req.query.page_size || 10)
     try {
       students = await students
     } catch (error) {
@@ -19,13 +22,20 @@ class StudentsController {
       logger.error(error)
       return res.status(500).json(httpError(1))
     }
-  
+
+    if (!students.results) {
+      students = {
+        results: students,
+        total: students.length
+      }
+    }
+
     res.json({
       ok: true,
-      students
+      ...students
     })
   }
-  
+
   static async get (req, res) {
     let student
     try {
@@ -43,7 +53,7 @@ class StudentsController {
       student
     })
   }
-  
+
   static async create (req, res) {
     // Validate the data
     let body
@@ -52,7 +62,7 @@ class StudentsController {
     } catch (error) {
       return res.status(400).json(httpError(error.details[0].message))
     }
-  
+
     // Create the student
     let student
     try {
@@ -68,17 +78,22 @@ class StudentsController {
       logger.error(error)
       return res.status(500).json(httpError(1))
     }
-  
+
     return res.json({
       ok: true,
       student
     })
   }
-  
+
   static async destroy (req, res) {
     const { id } = req.params
     try {
-      Joi.assert(id, Joi.number().integer().positive())
+      Joi.assert(
+        id,
+        Joi.number()
+          .integer()
+          .positive()
+      )
     } catch (error) {
       return res.status(400).json(httpError(392))
     }

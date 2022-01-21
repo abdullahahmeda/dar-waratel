@@ -14,7 +14,7 @@ class ClassesController {
       logger.error(error)
       return res.status(500).json(httpError(1))
     }
-  
+
     res.json({
       ok: true,
       classes
@@ -32,18 +32,21 @@ class ClassesController {
         error
       })
     }
-  
+
     // Create the class
     let _class
     try {
       console.log(body.students)
       _class = await Class.transaction(async trx => {
-        const _class = await Class.query(trx).insertGraph({
-          name: body.name,
-          students: body.students.map(studentId => ({ id: studentId }))
-        }, {
-          relate: true
-        })
+        const _class = await Class.query(trx).insertGraph(
+          {
+            name: body.name,
+            students: body.students.map(studentId => ({ id: studentId }))
+          },
+          {
+            relate: true
+          }
+        )
         logger.debug(_class)
         return _class
       })
@@ -52,7 +55,8 @@ class ClassesController {
         return res.status(400).json({
           ok: false,
           error: {
-            message: 'The given students array contains students that do not exist.'
+            message:
+              'The given students array contains students that do not exist.'
           }
         })
       }
@@ -60,7 +64,7 @@ class ClassesController {
       logger.error(error)
       return res.status(500).json(httpError(1))
     }
-  
+
     res.json({
       ok: true,
       class: _class

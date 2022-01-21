@@ -8,7 +8,8 @@ const Joi = require('joi')
 class GuardiansController {
   static async all (req, res) {
     let guardians = Guardian.query()
-    if (req.query.page) guardians.page(req.query.page, req.query.page_size || 10)
+    if (req.query.page)
+      guardians.page(req.query.page, req.query.page_size || 10)
     try {
       guardians = await guardians
     } catch (error) {
@@ -16,10 +17,17 @@ class GuardiansController {
       logger.error(error)
       return res.status(500).json(httpError(1))
     }
-  
+
+    if (!guardians.results) {
+      guardians = {
+        results: guardians,
+        total: guardians.length
+      }
+    }
+
     res.json({
       ok: true,
-      guardians
+      ...guardians
     })
   }
 
@@ -31,7 +39,7 @@ class GuardiansController {
     } catch (error) {
       return res.status(400).json(httpError(error.details[0].message))
     }
-  
+
     // Hash the password
     let hashedPassword
     try {
@@ -41,12 +49,15 @@ class GuardiansController {
       logger.error(error)
       return res.status(500).json(httpError(1))
     }
-  
+
     // Create the guardian
     delete body.password_confirmation
     let guardian
     try {
-      guardian = await Guardian.query().insert({ ...body, password: hashedPassword })
+      guardian = await Guardian.query().insert({
+        ...body,
+        password: hashedPassword
+      })
     } catch (error) {
       if (error.name === 'UniqueViolationError') {
         return res.status(400).json(httpError(290))
@@ -55,7 +66,7 @@ class GuardiansController {
       logger.error(error)
       return res.status(500).json(httpError(1))
     }
-  
+
     res.json({
       ok: true,
       guardian
@@ -65,7 +76,12 @@ class GuardiansController {
   static async destroy (req, res) {
     const { id } = req.params
     try {
-      Joi.assert(id, Joi.number().integer().positive())
+      Joi.assert(
+        id,
+        Joi.number()
+          .integer()
+          .positive()
+      )
     } catch (error) {
       return res.status(400).json(httpError(291))
     }

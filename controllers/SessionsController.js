@@ -8,8 +8,12 @@ const httpError = require('../utils/httpError')
 class SessionsController {
   static async all (req, res) {
     let sessions = Session.query().withGraphFetched('class')
-    if (req.query.student_id) sessions = Student.relatedQuery('sessions').for(req.query.student_id).withGraphFetched('class')
-    if (req.query.page) sessions = sessions.page(req.query.page, req.query.page_size || 10)
+    if (req.query.student_id)
+      sessions = Student.relatedQuery('sessions')
+        .for(req.query.student_id)
+        .withGraphFetched('class')
+    if (req.query.page)
+      sessions = sessions.page(req.query.page, req.query.page_size || 10)
     try {
       sessions = await sessions
     } catch (error) {
@@ -17,7 +21,7 @@ class SessionsController {
       logger.error(error)
       return res.status(500).json(httpError(1))
     }
-  
+
     res.json({
       ok: true,
       sessions
@@ -27,7 +31,9 @@ class SessionsController {
   static async get (req, res) {
     let session
     try {
-      session = await Session.query().withGraphFetched('[class,students]').findById(req.params.id)
+      session = await Session.query()
+        .withGraphFetched('[class,students]')
+        .findById(req.params.id)
     } catch (error) {
       logger.error('Unexpected error occurred while fetcing a session')
       logger.error(error)
@@ -59,17 +65,22 @@ class SessionsController {
         error
       })
     }
-  
+
     // Create the session
     let session
     try {
       session = await Session.transaction(async trx => {
-        const session = await Class.relatedQuery('sessions', trx).for(body.class_id).insertGraph({
-          session_date: body.session_date,
-          students: body.students.map(studentId => ({ id: studentId }))
-        }, {
-          relate: true
-        })
+        const session = await Class.relatedQuery('sessions', trx)
+          .for(body.class_id)
+          .insertGraph(
+            {
+              session_date: body.session_date,
+              students: body.students.map(studentId => ({ id: studentId }))
+            },
+            {
+              relate: true
+            }
+          )
         return session
       })
     } catch (error) {

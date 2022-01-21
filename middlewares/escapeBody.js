@@ -8,7 +8,8 @@ const initialOptions = {
 module.exports = function escapeBody (options) {
   options = { ...initialOptions, ...options }
   return function (req, res, next) {
-    if (options.methods.includes(req.method)) req.body = _escapeBody(req.body, options.deep, true)
+    if (options.methods.includes(req.method))
+      req.body = _escapeBody(req.body, options.deep, true)
     next()
   }
 }

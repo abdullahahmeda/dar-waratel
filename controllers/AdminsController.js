@@ -16,7 +16,7 @@ class AdminsController {
         error
       })
     }
-  
+
     // Hash the password
     let hashedPassword
     try {
@@ -26,7 +26,7 @@ class AdminsController {
       logger.error(error)
       return res.status(500).json(httpError(500))
     }
-  
+
     // Create the admin
     let admin
     try {
@@ -47,7 +47,7 @@ class AdminsController {
       logger.error(error)
       return res.status(500).json(httpError(500))
     }
-  
+
     res.json({
       ok: true,
       admin
